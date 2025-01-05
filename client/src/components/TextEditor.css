@@ -1,0 +1,19 @@
+.editor {
+  border: 1px solid #ff0000;
+  padding: 10px;
+  min-height: 200px; /* Pastikan area editor cukup tinggi */
+  background-color: #ff0000; /* Memberikan latar belakang */
+  font-size: 16px; /* Tentukan ukuran font */
+  width: 100%; /* Sesuaikan lebar */
+}
+.toolbar button {
+  margin: 5px;
+}
+
+ql-container {
+  height: 300px; /* Memberi tinggi pada editor */
+  border: 1px solid #ccc; /* Memberi border agar terlihat */
+}
+.ql-editor {
+  min-height: 200px; /* Memberi tinggi minimal agar bisa digunakan */
+}
