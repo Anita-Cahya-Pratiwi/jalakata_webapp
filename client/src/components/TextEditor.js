@@ -1,45 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { database, ref, set } from '../firebase-config'; 
-import { onValue } from 'firebase/database';  
+import { saveTextToFirebase, listenToFirebaseText } from '../firebaseHelper';
 
 const TextEditor = () => {
-  const [text, setText] = useState(''); 
+  const [text, setText] = useState(''); // State untuk menyimpan teks
+  const [error, setError] = useState(null); // State untuk pesan error
 
-  // Fungsi untuk menangani perubahan teks di textarea
+  // Fungsi untuk menangani perubahan teks
   const handleTextChange = (event) => {
-    const newText = event.target.value; // Mendapatkan teks yang baru
-    setText(newText); // Update state teks 
+    const newText = event.target.value; // Mendapatkan teks terbaru
+    setText(newText); // Update state teks
 
-    // Kirimkan teks baru ke Firebase secara langsung
-    const textRef = ref(database, 'textEditorData'); // Menentukan path di Firebase
-    set(textRef, { text: newText }); // Menyimpan teks ke Firebase
+    // Simpan teks ke Firebase
+    saveTextToFirebase('documents/jalakata', newText).catch((err) => {
+      setError('Gagal menyimpan teks ke server.');
+      console.error(err);
+    });
   };
 
   // Menggunakan useEffect untuk mendengarkan perubahan teks di Firebase
   useEffect(() => {
-    const textRef = ref(database, 'textEditorData'); // Mendefinisikan referensi yang sama di Firebase
-    const unsubscribe = onValue(textRef, (snapshot) => {
-      const data = snapshot.val(); // Mendapatkan data terbaru dari Firebase
-      if (data && data.text) {
-        setText(data.text);  // Update state teks jika ada perubahan
+    // Listener untuk teks di Firebase
+    const unsubscribe = listenToFirebaseText(
+      'documents/jalakata',
+      (newText) => {
+        setText(newText); // Update state teks
+      },
+      (err) => {
+        setError('Gagal memuat teks dari server.');
+        console.error(err);
       }
-    });
+    );
 
-    // Hentikan listener saat komponen di-unmount
-    return () => {
-      unsubscribe(); // Menghentikan listener ketika komponen dihapus
-    };
-  }, []); // useEffect hanya dijalankan sekali saat pertama kali dimuat
+    // Bersihkan listener saat komponen di-unmount
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div>
       <h1>Jalakata</h1>
-      <textarea
-        value={text} // Menampilkan teks dari state
-        onChange={handleTextChange} // Mengupdate teks dan mengirimkan ke Firebase
-        rows="10"
-        cols="50"
-      />
+      {error && <p className="error-message">{error}</p>} {/* Tampilkan pesan error jika ada */}
+      {(
+        <textarea
+          value={text} // Menampilkan teks dari state
+          onChange={handleTextChange} // Menyimpan teks ke Firebase saat ada perubahan
+          rows="10"
+          cols="50"
+        />
+      )}
     </div>
   );
 };
