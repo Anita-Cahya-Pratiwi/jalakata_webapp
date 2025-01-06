@@ -15,7 +15,6 @@ const Auth = ({ setUser }) => {
       setUser(userCredential.user);
       setError(''); // Reset pesan error
     } catch (error) {
-      // Tangani pesan error berdasarkan kode error dari Firebase
       if (error.code === 'auth/user-not-found') {
         setError('Pengguna tidak terdaftar.');
       } else if (error.code === 'auth/wrong-password') {
