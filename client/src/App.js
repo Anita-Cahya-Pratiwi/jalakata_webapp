@@ -7,11 +7,11 @@ import './App.css';
 function App() {
   const [user, setUser] = useState(null);
 
-  // Fungsi logout dipindahkan ke App.js
+  // Fungsi logout 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      setUser(null); // Mengubah status pengguna menjadi null setelah logout
+      setUser(null); //status pengguna menjadi null setelah logout
     } catch (error) {
       console.error("Error logging out: ", error);
     }
@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("User status berubah: ", user); // Tambahkan log untuk melihat user
+      console.log("User status berubah: ", user); 
       setUser(user);
     });
     return () => unsubscribe();
