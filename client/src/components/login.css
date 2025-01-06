@@ -42,7 +42,7 @@
   }
   
   .logout-button {
-    max-width: 10%;
+    width: fit-content;
     margin-top: 15px;
     padding: 12px;
     background-color: #f44336;
