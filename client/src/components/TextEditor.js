@@ -38,7 +38,7 @@ const TextEditor = () => {
   return (
     <div>
       <h1>Jalakata</h1>
-      {error && <p className="error-message">{error}</p>} {/* Tampilkan pesan error jika ada */}
+      {error && <p className="error-message">{error}</p>} 
       {(
         <textarea
           value={text} // Menampilkan teks dari state
