@@ -1,0 +1,11 @@
+.editor-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 300px;
+  background-color: #f9f9f9;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}
